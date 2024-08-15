@@ -16,11 +16,9 @@ Certifique-se de que você tem o ambiente configurado corretamente:
 
 <br>
 
-2. Para rodar o projeto, primeiro você deve clonar o repositório:
+2. Para rodar o projeto, primeiro crie um fork do repositório e clone:
 
-```bash
-$ git clone git@github.com:guilhermetupi/frontend-test.git
-```
+   [![N|Solid](https://imgs.search.brave.com/FvmnXGsKho4Y9x57wOGW1IV8hNO5GCz_eYkBFdnf6FM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Z2l0a3Jha2VuLmNv/bS93cC1jb250ZW50/L3VwbG9hZHMvMjAy/MS8xMS9naXRodWIt/aG93LXRvLWZvcmst/YnV0dG9uLWdpdGh1/Yi0xMDI0eDM4NS5w/bmc)](https://imgs.search.brave.com/FvmnXGsKho4Y9x57wOGW1IV8hNO5GCz_eYkBFdnf6FM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Z2l0a3Jha2VuLmNv/bS93cC1jb250ZW50/L3VwbG9hZHMvMjAy/MS8xMS9naXRodWIt/aG93LXRvLWZvcmst/YnV0dG9uLWdpdGh1/Yi0xMDI0eDM4NS5w/bmc)
 
 <br>
 
