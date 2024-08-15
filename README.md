@@ -1,6 +1,6 @@
 # Desafio frontend
 
-Para completar o desafio frontend, você precisa criar uma aplicação Next.js que consome dados de uma API e exibe essas informações de acordo com os requisitos fornecidos nas imagens. Essas são as documentações necessárias para o desenvolvimento do projeto: [ReactJS](https://react.dev/reference/react), [NextJS](https://nextjs.org/docs), [TailwindCSS](https://tailwindcss.com/docs/installation) e [Ant Design](https://ant.design/components/overview).
+Para completar o desafio frontend, você precisa criar uma aplicação Next.js que consome dados da API da pasta backend e exibe essas informações de acordo com os requisitos fornecidos nas imagens. Essas são as documentações necessárias para o desenvolvimento do projeto: [ReactJS](https://react.dev/reference/react), [NextJS](https://nextjs.org/docs), [TailwindCSS](https://tailwindcss.com/docs/installation) e [Ant Design](https://ant.design/components/overview).
 
 ##### Obs 1: Para as requisições à API, utilize [server actions do NextJS](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#client-components) com a API_URL configurada no arquivo `.env`.
 
