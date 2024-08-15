@@ -4,7 +4,7 @@ Para completar o desafio frontend, você precisa criar uma aplicação Next.js q
 
 ##### Obs 1: Para as requisições à API, utilize [server actions do NextJS](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#client-components) com a API_URL configurada no arquivo `.env`.
 
-##### Obs 2: Utilize as interfaces dos controllers da pasta `backend/src/interfaces` para tipar as respostas das requisições.
+##### Obs 2: Veja a documentação da API [aqui]().
 
 ---
 
@@ -37,6 +37,8 @@ $ cd backend; npm install; npm run dev
 ```bash
 $ cd frontend; npm install; npm run dev
 ```
+
+---
 
 ### 2. Imagens do desafio
 
