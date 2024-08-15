@@ -57,6 +57,5 @@ Cria um novo envio.
 POST http://localhost:4000/shipments
 { body: { products: { id: string; name: string; }[] } }
 
-
 Response: undefined | { error: string }
 ```
