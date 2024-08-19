@@ -18,7 +18,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <AntdRegistry>
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <main style={{
+            marginLeft: "20rem",
+            marginRight: "20rem",
+            marginTop: "1rem",
+          }}>
+            {children}
+          </main>
+        </body>
       </AntdRegistry>
     </html>
   );
