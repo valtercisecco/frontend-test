@@ -68,11 +68,11 @@ export default function ProductPage() {
     try {
       const shipmentData = { products: addedProducts.map(p => p.id) };
       await createShipment(shipmentData); // Create shipment via API
-      message.success("Shipment created successfully!");
+      message.success("Envio criado com sucesso!");
       setAddedProducts([]);
     } catch (error) {
       console.error("Error creating shipment:", error); 
-      message.error("Error creating shipment."); 
+      message.error("Erro ao criar envio."); 
     } finally {
       setCreatingShipment(false);
     }
@@ -82,7 +82,7 @@ export default function ProductPage() {
     <div>
       <div>
         <Button type="text" icon={<ArrowLeftOutlined />} onClick={buttonClick}>
-          Back
+          Voltar
         </Button>
       </div>
       <div style={{
@@ -103,7 +103,7 @@ export default function ProductPage() {
               }))}
             />
             <Button type="primary" onClick={handleAddProduct} disabled={!selectedProductId}>
-              Add
+              Adicionar
             </Button>
           </Space>
         )}
@@ -114,7 +114,7 @@ export default function ProductPage() {
               <List.Item style={{ border: 'none', padding: '8px 0', display: 'flex', alignItems: 'center' }}>
                 {item.name}
                 <Button danger onClick={() => handleRemoveProduct(item.id)}>
-                  Remove
+                  Remover
                 </Button>
               </List.Item>
             )}
@@ -126,7 +126,7 @@ export default function ProductPage() {
             loading={creatingShipment}
             style={{ marginTop: "1rem", marginLeft: "70rem" }}
           >
-            Create Shipment
+            Criar envio
           </Button>
         </div>
       </div>

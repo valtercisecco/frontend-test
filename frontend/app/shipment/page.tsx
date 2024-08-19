@@ -52,18 +52,18 @@ export default function ShipmentPage() {
     // Columns for Ant Design Table
     const columns = [
         {
-            title: "Shipment Number",
+            title: "Número da remessa",
             dataIndex: "shipmentNumber",
             key: "shipmentNumber",
         },
         {
-            title: "Send Date",
+            title: "Data de envio",
             dataIndex: "sendDate",
             key: "sendDate",
             render: (date: string) => new Date(date).toLocaleDateString(),
         },
         {
-            title: "Last Update",
+            title: "Última atualização",
             dataIndex: "lastUpdate",
             key: "lastUpdate",
             render: (date: string) => new Date(date).toLocaleDateString(),
@@ -75,11 +75,11 @@ export default function ShipmentPage() {
             render: (status: ShipmentStatus) => status,
         },
         {
-            title: "Actions",
+            title: "Ações",
             dataIndex: "id",
             key: "actions",
             render: (id: string) => (
-                <Button type='primary' onClick={() => handleShowDetails(id)}>View Details</Button>
+                <Button type='primary' onClick={() => handleShowDetails(id)}>Ver detalhes</Button>
             ),
         },
     ];
@@ -87,7 +87,7 @@ export default function ShipmentPage() {
     return (
         <div>
             <Button type="primary" onClick={() => router.push('/product')}>
-                Create Shipment
+                Criar envio
             </Button>
             <div style={{ marginTop: "1rem" }}>
                 <Table
