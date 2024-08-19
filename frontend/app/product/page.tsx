@@ -1,10 +1,11 @@
 "use client";
 
-import { Button, Select, Space, Spin, List } from 'antd';
+import { Button, Select, Space, Spin, List, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { findAllProducts } from "@/actions/product";
+import { createShipment } from "@/actions/shipment"; // Importe a função createShipment
 import { Product } from "@/types";
 
 export default function ProductPage() {
@@ -13,6 +14,7 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true);
   const [selectedProductId, setSelectedProductId] = useState<string | undefined>(undefined);
   const [addedProducts, setAddedProducts] = useState<Product[]>([]);
+  const [creatingShipment, setCreatingShipment] = useState(false);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -33,10 +35,6 @@ export default function ProductPage() {
     router.push('/shipment');
   };
 
-  const shipmentClick = () => {
-    router.push('/shipment');
-  };
-
   const handleChange = (value: string) => {
     setSelectedProductId(value);
   };
@@ -44,10 +42,8 @@ export default function ProductPage() {
   const handleAddProduct = () => {
     if (selectedProductId) {
       const product = products.find(p => p.id === selectedProductId);
-      if (product) {
-        if (!addedProducts.some(p => p.id === product.id)) {
-          setAddedProducts(prev => [...prev, product]);
-        }
+      if (product && !addedProducts.some(p => p.id === product.id)) {
+        setAddedProducts(prev => [...prev, product]);
       }
       setSelectedProductId(undefined);
     }
@@ -55,6 +51,23 @@ export default function ProductPage() {
 
   const handleRemoveProduct = (productId: string) => {
     setAddedProducts(prev => prev.filter(p => p.id !== productId));
+  };
+
+  const handleCreateShipment = async () => {
+    if (addedProducts.length === 0) return;
+    
+    setCreatingShipment(true);
+    try {
+      const shipmentData = { products: addedProducts.map(p => p.id) };
+      await createShipment(shipmentData);
+      message.success("Shipment criado com sucesso!");
+      setAddedProducts([]); // Limpa a lista de produtos após a criação
+    } catch (error) {
+      console.error("Error creating shipment:", error);
+      message.error("Erro ao criar shipment.");
+    } finally {
+      setCreatingShipment(false);
+    }
   };
 
   return (
@@ -92,13 +105,19 @@ export default function ProductPage() {
             renderItem={(item) => (
               <List.Item style={{ border: 'none', padding: '8px 0', display: 'flex', alignItems: 'center' }}>
                 {item.name}
-                <Button danger onClick={() => handleRemoveProduct(item.id)} >
+                <Button danger onClick={() => handleRemoveProduct(item.id)}>
                   Remover
                 </Button>
               </List.Item>
             )}
           />
-          <Button type="primary" onClick={shipmentClick} style={{marginTop: "1rem", marginLeft: "70rem"}}>
+          <Button
+            type="primary"
+            onClick={handleCreateShipment}
+            disabled={addedProducts.length === 0 || creatingShipment}
+            loading={creatingShipment}
+            style={{ marginTop: "1rem", marginLeft: "70rem" }}
+          >
             Criar envio
           </Button>
         </div>

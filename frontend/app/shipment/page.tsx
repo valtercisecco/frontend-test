@@ -1,88 +1,106 @@
-"use client";
+"use client"
 
-import { Button, Table } from "antd";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { findAllShipments } from "@/actions/shipment";
-import { Shipment, ShipmentStatus } from "@/types";
+import { Button, Table } from 'antd';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { findAllShipments, findShipmentById } from '@/actions/shipment';
+import { Shipment, ShipmentStatus } from '@/types';
+import ShipmentDetailsModal from '@/components/shipment.details'; // Ajuste o caminho conforme necessário
 
 export default function ShipmentPage() {
-  const router = useRouter();
-  const [shipments, setShipments] = useState<Shipment[]>([]);
-  const [loading, setLoading] = useState(true);
+    const router = useRouter();
+    const [shipments, setShipments] = useState<Shipment[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedShipment, setSelectedShipment] = useState<Shipment | undefined>(undefined);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await findAllShipments();
-        setShipments(data);
-      } catch (error) {
-        console.error("Error fetching shipments:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const data = await findAllShipments();
+                setShipments(data);
+            } catch (error) {
+                console.error("Error fetching shipments:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
 
-    fetchData();
-  }, []);
+        fetchData();
+    }, []);
 
-  const columns = [
-    {
-      title: "Shipment Number",
-      dataIndex: "shipmentNumber",
-      key: "shipmentNumber",
-    },
-    {
-      title: "Send Date",
-      dataIndex: "sendDate",
-      key: "sendDate",
-      render: (date: string) => new Date(date).toLocaleDateString(),
-    },
-    {
-      title: "Last Update",
-      dataIndex: "lastUpdate",
-      key: "lastUpdate",
-      render: (date: string) => new Date(date).toLocaleDateString(),
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status: ShipmentStatus) => status,
-    },
-    {
-      title: "Products",
-      dataIndex: "products",
-      key: "products",
-      render: (products: Shipment["products"]) => products.map((product) => product.name).join(", "),
-    },
-  ];
+    const handleShowDetails = async (id: string) => {
+        try {
+            const shipment = await findShipmentById(id);
+            setSelectedShipment(shipment); // Atualiza o estado com os dados do envio
+            setModalVisible(true); // Mostra o modal
+        } catch (error) {
+            console.error("Erro ao buscar detalhes do envio:", error);
+        }
+    };
 
-  const buttonClick = () => {
-    router.push("../product");
-  };
+    const handleCancel = () => {
+        setModalVisible(false);
+        setSelectedShipment(undefined); // Limpa a seleção ao fechar o modal
+    };
 
-  return (
-    <div>
-      <div>
-        <Button type="primary" onClick={buttonClick}>
-          Criar envio
-        </Button>
-      </div>
-      <div style={{ marginTop: "1rem" }}>
-        <Table
-          dataSource={shipments.map((shipment) => ({
-            key: shipment.id,
-            shipmentNumber: shipment.shipmentNumber,
-            sendDate: shipment.sendDate,
-            lastUpdate: shipment.lastUpdate,
-            status: shipment.status,
-            products: shipment.products,
-          }))}
-          columns={columns}
-          loading={loading}
-        />
-      </div>
-    </div>
-  );
+    const columns = [
+        {
+            title: "Número da remessa",
+            dataIndex: "shipmentNumber",
+            key: "shipmentNumber",
+        },
+        {
+            title: "Data do envio",
+            dataIndex: "sendDate",
+            key: "sendDate",
+            render: (date: string) => new Date(date).toLocaleDateString(),
+        },
+        {
+            title: "Última atualização",
+            dataIndex: "lastUpdate",
+            key: "lastUpdate",
+            render: (date: string) => new Date(date).toLocaleDateString(),
+        },
+        {
+            title: "Status",
+            dataIndex: "status",
+            key: "status",
+            render: (status: ShipmentStatus) => status,
+        },
+        {
+            title: "Ações",
+            dataIndex: "id",
+            key: "actions",
+            render: (id: string) => (
+                <Button type='primary' onClick={() => handleShowDetails(id)}>Ver detalhes</Button>
+            ),
+        },
+    ];
+
+    return (
+        <div>
+            <Button type="primary" onClick={() => router.push('/product')}>
+                Criar envio
+            </Button>
+            <div style={{ marginTop: "1rem" }}>
+                <Table
+                    dataSource={shipments.map((shipment) => ({
+                        shipmentNumber: shipment.shipmentNumber,
+                        sendDate: shipment.sendDate,
+                        lastUpdate: shipment.lastUpdate,
+                        status: shipment.status,
+                        id: shipment.id, // Certifique-se de incluir o ID para ações
+                    }))}
+                    columns={columns}
+                    loading={loading}
+                />
+            </div>
+            <ShipmentDetailsModal
+                visible={modalVisible}
+                onCancel={handleCancel}
+                shipment={selectedShipment}
+            />
+        </div>
+    );
 }
