@@ -13,7 +13,6 @@ export default function StartPage() {
   return (
     <div>
       <div style={{
-        display: "block",
         border: "1px solid #ddd",
         borderRadius: "8px",
         padding: "16px",

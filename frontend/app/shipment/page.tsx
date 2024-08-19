@@ -1,24 +1,27 @@
 "use client"
 
+// Imports
 import { Button, Table } from 'antd';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { findAllShipments, findShipmentById } from '@/actions/shipment';
 import { Shipment, ShipmentStatus } from '@/types';
-import ShipmentDetailsModal from '@/components/shipment.details'; // Ajuste o caminho conforme necessário
+import ShipmentDetailsModal from '@/components/shipment.details';
 
 export default function ShipmentPage() {
     const router = useRouter();
+    
     const [shipments, setShipments] = useState<Shipment[]>([]);
     const [loading, setLoading] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedShipment, setSelectedShipment] = useState<Shipment | undefined>(undefined);
 
+    // Effect hook to fetch shipment data on component mount
     useEffect(() => {
         async function fetchData() {
             try {
-                const data = await findAllShipments();
-                setShipments(data);
+                const data = await findAllShipments(); 
+                setShipments(data); // Update state with fetched shipments
             } catch (error) {
                 console.error("Error fetching shipments:", error);
             } finally {
@@ -29,35 +32,38 @@ export default function ShipmentPage() {
         fetchData();
     }, []);
 
+    // Function to handle showing shipment details in a modal
     const handleShowDetails = async (id: string) => {
         try {
-            const shipment = await findShipmentById(id);
-            setSelectedShipment(shipment); // Atualiza o estado com os dados do envio
-            setModalVisible(true); // Mostra o modal
+            const shipment = await findShipmentById(id); 
+            setSelectedShipment(shipment); 
+            setModalVisible(true); // Show the modal
         } catch (error) {
-            console.error("Erro ao buscar detalhes do envio:", error);
+            console.error("Error fetching shipment details:", error);
         }
     };
 
+    // Function to handle closing the modal
     const handleCancel = () => {
-        setModalVisible(false);
-        setSelectedShipment(undefined); // Limpa a seleção ao fechar o modal
+        setModalVisible(false); // Hide the modal
+        setSelectedShipment(undefined); // Clear selected shipment
     };
 
+    // Columns for Ant Design Table
     const columns = [
         {
-            title: "Número da remessa",
+            title: "Shipment Number",
             dataIndex: "shipmentNumber",
             key: "shipmentNumber",
         },
         {
-            title: "Data do envio",
+            title: "Send Date",
             dataIndex: "sendDate",
             key: "sendDate",
             render: (date: string) => new Date(date).toLocaleDateString(),
         },
         {
-            title: "Última atualização",
+            title: "Last Update",
             dataIndex: "lastUpdate",
             key: "lastUpdate",
             render: (date: string) => new Date(date).toLocaleDateString(),
@@ -69,11 +75,11 @@ export default function ShipmentPage() {
             render: (status: ShipmentStatus) => status,
         },
         {
-            title: "Ações",
+            title: "Actions",
             dataIndex: "id",
             key: "actions",
             render: (id: string) => (
-                <Button type='primary' onClick={() => handleShowDetails(id)}>Ver detalhes</Button>
+                <Button type='primary' onClick={() => handleShowDetails(id)}>View Details</Button>
             ),
         },
     ];
@@ -81,7 +87,7 @@ export default function ShipmentPage() {
     return (
         <div>
             <Button type="primary" onClick={() => router.push('/product')}>
-                Criar envio
+                Create Shipment
             </Button>
             <div style={{ marginTop: "1rem" }}>
                 <Table
@@ -90,14 +96,14 @@ export default function ShipmentPage() {
                         sendDate: shipment.sendDate,
                         lastUpdate: shipment.lastUpdate,
                         status: shipment.status,
-                        id: shipment.id, // Certifique-se de incluir o ID para ações
+                        id: shipment.id,
                     }))}
                     columns={columns}
                     loading={loading}
                 />
             </div>
             <ShipmentDetailsModal
-                visible={modalVisible}
+                visible={modalVisible} // Show or hide modal
                 onCancel={handleCancel}
                 shipment={selectedShipment}
             />

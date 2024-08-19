@@ -1,4 +1,4 @@
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 import { Shipment } from '@/types';
 
 interface ShipmentDetailsModalProps {
@@ -10,22 +10,22 @@ interface ShipmentDetailsModalProps {
 const ShipmentDetailsModal: React.FC<ShipmentDetailsModalProps> = ({ visible, onCancel, shipment }) => {
     return (
         <Modal
-            title={`Remessa ${shipment?.shipmentNumber}`} // Exibe o número da remessa no título
+            title={`Remessa ${shipment?.shipmentNumber}`}
             open={visible}
             onCancel={onCancel}
             footer={[]}
         >
             {shipment ? (
                 <>
-                    <p><strong>Produtos:</strong></p>
-                    <ul style={{ listStyleType: 'disc', paddingLeft: '1rem' }}>
+                    <p>Produtos</p>
+                    <ul style={{ listStyleType: 'disc', paddingLeft: '1rem', marginTop: '1rem' }}>
                         {shipment.products.map((item) => (
                             <li key={item.id}>{item.name}</li>
                         ))}
                     </ul>
                 </>
             ) : (
-                <p>Carregando detalhes do envio...</p>
+                <p>Carregando...</p>
             )}
         </Modal>
     );
