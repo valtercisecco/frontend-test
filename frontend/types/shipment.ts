@@ -10,9 +10,9 @@ export interface Shipment {
 }
 
 export enum ShipmentStatus {
-  SHIPPED = "SHIPPED",
-  DELIVERED = "DELIVERED",
-  CANCELLED = "CANCELLED",
+  SHIPPED = "Enviado",
+  DELIVERED = "Entregue",
+  CANCELLED = "Cancelado",
 }
 
 export interface CreateShipmentDto {
