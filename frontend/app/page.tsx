@@ -3,7 +3,7 @@
 import { Button, Divider } from 'antd';
 import { useRouter } from 'next/navigation';
 
-export default async function StartPage() {
+export default function StartPage() {
   const router = useRouter();
 
   const buttonClick = () => {
@@ -12,10 +12,6 @@ export default async function StartPage() {
 
   return (
     <div>
-      <div>
-        <img src="/logo.png" alt="Logo" style={{ width: "6rem" }} />
-      </div>
-      <Divider />
       <div style={{
         display: "block",
         border: "1px solid #ddd",
