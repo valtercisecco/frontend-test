@@ -1,6 +1,5 @@
 "use client";
 
-// Imports
 import { Button, Select, Space, Spin, List, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -18,12 +17,11 @@ export default function ProductPage() {
   const [addedProducts, setAddedProducts] = useState<Product[]>([]);
   const [creatingShipment, setCreatingShipment] = useState(false);
 
-  // Effect hook to fetch products data when the component mounts
   useEffect(() => {
     async function fetchProducts() {
       try {
         const data = await findAllProducts();
-        setProducts(data); // Update state with fetched products
+        setProducts(data); 
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -34,40 +32,35 @@ export default function ProductPage() {
     fetchProducts(); 
   }, []);
 
-  // Function to handle navigation to the shipment page
   const buttonClick = () => {
     router.push('/shipment');
   };
 
-  // Function to handle the change of selected product from the dropdown
   const handleChange = (value: string) => {
     setSelectedProductId(value);
   };
 
-  // Function to handle adding the selected product to the list of added products
   const handleAddProduct = () => {
     if (selectedProductId) {
       const product = products.find(p => p.id === selectedProductId); 
       if (product && !addedProducts.some(p => p.id === product.id)) {
         setAddedProducts(prev => [...prev, product]);
       }
-      setSelectedProductId(undefined); // Clear the selected product ID
+      setSelectedProductId(undefined);
     }
   };
 
-  // Function to handle removing a product from the list of added products
   const handleRemoveProduct = (productId: string) => {
     setAddedProducts(prev => prev.filter(p => p.id !== productId));
   };
 
-  // Function to handle creating a shipment with the added products
   const handleCreateShipment = async () => {
     if (addedProducts.length === 0) return;
     
     setCreatingShipment(true);
     try {
       const shipmentData = { products: addedProducts.map(p => p.id) };
-      await createShipment(shipmentData); // Create shipment via API
+      await createShipment(shipmentData);
       message.success("Envio criado com sucesso!");
       setAddedProducts([]);
     } catch (error) {

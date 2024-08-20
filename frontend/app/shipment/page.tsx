@@ -1,6 +1,5 @@
 "use client"
 
-// Imports
 import { Button, Table } from 'antd';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -16,12 +15,11 @@ export default function ShipmentPage() {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedShipment, setSelectedShipment] = useState<Shipment | undefined>(undefined);
 
-    // Effect hook to fetch shipment data on component mount
     useEffect(() => {
         async function fetchData() {
             try {
                 const data = await findAllShipments(); 
-                setShipments(data); // Update state with fetched shipments
+                setShipments(data);
             } catch (error) {
                 console.error("Error fetching shipments:", error);
             } finally {
@@ -32,24 +30,21 @@ export default function ShipmentPage() {
         fetchData();
     }, []);
 
-    // Function to handle showing shipment details in a modal
     const handleShowDetails = async (id: string) => {
         try {
             const shipment = await findShipmentById(id); 
             setSelectedShipment(shipment); 
-            setModalVisible(true); // Show the modal
+            setModalVisible(true);
         } catch (error) {
             console.error("Error fetching shipment details:", error);
         }
     };
 
-    // Function to handle closing the modal
     const handleCancel = () => {
-        setModalVisible(false); // Hide the modal
-        setSelectedShipment(undefined); // Clear selected shipment
+        setModalVisible(false); 
+        setSelectedShipment(undefined);
     };
 
-    // Columns for Ant Design Table
     const columns = [
         {
             title: "Número da remessa",
@@ -103,7 +98,7 @@ export default function ShipmentPage() {
                 />
             </div>
             <ShipmentDetailsModal
-                visible={modalVisible} // Show or hide modal
+                visible={modalVisible}
                 onCancel={handleCancel}
                 shipment={selectedShipment}
             />
